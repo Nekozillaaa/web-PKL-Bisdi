@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AuditLog;
 use App\Models\Booking;
 use App\Models\Laboratory;
+use App\Models\User;
+use App\Notifications\BookingStatusUpdatedNotification;
+use App\Notifications\NewBookingRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -83,6 +86,12 @@ class BookingController extends Controller
 
             DB::commit();
 
+            // Notifikasi ke dosen, laboran, dan admin bahwa ada permintaan peminjaman baru
+            $reviewers = User::whereIn('role', ['dosen', 'laboran', 'admin'])->get();
+            foreach ($reviewers as $reviewer) {
+                $reviewer->notify(new NewBookingRequestNotification($booking));
+            }
+
             return redirect()->route('dashboard')->with('success', 'Peminjaman berhasil diajukan dan menunggu validasi.');
 
         } catch (\Exception $e) {
@@ -95,7 +104,7 @@ class BookingController extends Controller
     public function updateStatus(Request $request, Booking $booking)
     {
         $request->validate([
-            'status' => 'required|in:approved_dosen,approved_laboran,rejected,completed',
+            'status' => 'required|in:pending,approved_dosen,approved_laboran,rejected,completed',
             'notes' => 'nullable|string',
         ]);
 
@@ -130,6 +139,11 @@ class BookingController extends Controller
             ]);
 
             DB::commit();
+
+            // Notifikasi ke mahasiswa pemohon peminjaman
+            if ($booking->user) {
+                $booking->user->notify(new BookingStatusUpdatedNotification($booking, $user, $request->notes));
+            }
 
             return back()->with('success', 'Status peminjaman berhasil diperbarui.');
         } catch (\Exception $e) {

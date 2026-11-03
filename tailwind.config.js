@@ -12,7 +12,32 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                premium: {
+                    black: '#0a0a0a',
+                    dark: '#171717',
+                    gray: '#262626',
+                },
+                brand: {
+                    orange: '#ff6b00',
+                    red: '#dc2626',
+                },
+            },
+            animation: {
+                'fade-in-up': 'fadeInUp 0.7s ease-out forwards',
+                'fade-in': 'fadeIn 0.5s ease-out forwards',
+            },
+            keyframes: {
+                fadeInUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
             },
         },
     },

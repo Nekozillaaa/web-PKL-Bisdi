@@ -15,4 +15,9 @@ class Laboratory extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function items()
+    {
+        return $this->hasMany(LabItem::class);
+    }
 }
