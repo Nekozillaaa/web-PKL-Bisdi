@@ -180,31 +180,28 @@ class AdminLabItemTest extends TestCase
         Notification::assertSentTo($student, BookingStatusUpdatedNotification::class);
     }
 
-    public function test_booking_creation_notifies_dosen_laboran_and_admin(): void
+    public function test_booking_creation_notifies_admin(): void
     {
         Notification::fake();
 
         $student = User::factory()->create(['role' => 'mahasiswa']);
-        $dosen = User::factory()->create(['role' => 'dosen']);
-        $laboran = User::factory()->create(['role' => 'laboran']);
         $admin = User::factory()->create(['role' => 'admin']);
 
         $lab = Laboratory::create([
-            'name' => 'Lab Multimedia',
-            'description' => 'Lab Desain & Video',
+            'name' => 'Lab Bisnis Digital',
+            'description' => 'Lab Bisnis Digital',
             'capacity' => 25,
             'is_active' => true,
         ]);
 
         $response = $this->actingAs($student)->post(route('bookings.store'), [
-            'laboratory_id' => $lab->id,
             'start_time' => now()->addDays(2)->format('Y-m-d H:i:s'),
             'end_time' => now()->addDays(2)->addHours(2)->format('Y-m-d H:i:s'),
-            'purpose' => 'Editing Film Tugas Akhir',
+            'purpose' => 'Praktikum Bisnis Digital',
         ]);
 
         $response->assertRedirect(route('dashboard'));
 
-        Notification::assertSentTo([$dosen, $laboran, $admin], NewBookingRequestNotification::class);
+        Notification::assertSentTo($admin, NewBookingRequestNotification::class);
     }
 }

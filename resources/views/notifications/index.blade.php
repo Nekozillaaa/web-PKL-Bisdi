@@ -58,7 +58,7 @@
                             <p class="text-sm text-gray-300 leading-relaxed mb-3">{{ $data['message'] ?? '' }}</p>
 
                             <div class="flex items-center gap-3">
-                                @if(!empty($data['url']))
+                                @if(!empty($data['url']) || !empty($data['booking_id']))
                                     <a href="{{ route('notifications.read', $notification->id) }}" class="text-xs font-bold text-brand-orange hover:underline inline-flex items-center gap-1">
                                         Lihat Detail <i class="fa-solid fa-arrow-right text-[10px]"></i>
                                     </a>

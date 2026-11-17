@@ -6,6 +6,7 @@
                 <h2 class="text-2xl font-black text-white leading-tight">
                     Kelola <span class="text-gradient">Barang Laboratorium</span>
                 </h2>
+                <p class="text-xs text-gray-500 mt-1">Laboratorium: <span class="text-brand-orange font-bold">{{ $lab->name ?? 'Lab Bisnis Digital' }}</span></p>
             </div>
             <div class="shrink-0">
                 <a href="{{ route('admin.items.create') }}" class="btn-brand inline-flex items-center gap-2 text-sm whitespace-nowrap">
@@ -70,19 +71,9 @@
 
         {{-- Filter & Search Form --}}
         <div class="card-dark rounded-2xl p-5 border border-white/7">
-            <form method="GET" action="{{ route('admin.items.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div>
+            <form method="GET" action="{{ route('admin.items.index') }}" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-1">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau kode barang..." class="input-dark text-xs">
-                </div>
-                <div>
-                    <select name="laboratory_id" class="input-dark text-xs">
-                        <option value="">Semua Laboratorium</option>
-                        @foreach($laboratories as $lab)
-                            <option value="{{ $lab->id }}" {{ request('laboratory_id') == $lab->id ? 'selected' : '' }}>
-                                {{ $lab->name }}
-                            </option>
-                        @endforeach
-                    </select>
                 </div>
                 <div>
                     <select name="condition" class="input-dark text-xs">
@@ -97,7 +88,7 @@
                         <i class="fa-solid fa-filter text-xs"></i>
                         Filter
                     </button>
-                    @if(request()->hasAny(['search', 'laboratory_id', 'condition']))
+                    @if(request()->hasAny(['search', 'condition']))
                         <a href="{{ route('admin.items.index') }}" class="px-4 py-2.5 bg-white/5 border border-white/10 text-gray-300 font-bold text-xs rounded-xl hover:bg-white/10 transition-colors inline-flex items-center justify-center">
                             Reset
                         </a>
@@ -111,7 +102,7 @@
             <div class="px-6 py-4 border-b border-white/5 flex items-center justify-between bg-premium-gray/30">
                 <h3 class="font-bold text-white text-sm flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-brand-orange"></i>
-                    Daftar Barang yang Dapat Dipinjam
+                    Daftar Barang Inventaris Lab Bisnis Digital
                 </h3>
                 <span class="text-xs text-gray-500">{{ $items->total() }} barang ditemukan</span>
             </div>
@@ -122,7 +113,6 @@
                         <tr class="border-b border-white/5 bg-premium-gray/50">
                             <th class="py-3.5 px-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Kode</th>
                             <th class="py-3.5 px-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Nama Barang</th>
-                            <th class="py-3.5 px-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Laboratorium</th>
                             <th class="py-3.5 px-5 text-center text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Ketersediaan</th>
                             <th class="py-3.5 px-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Kondisi</th>
                             <th class="py-3.5 px-5 text-center text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
@@ -142,12 +132,6 @@
                                 @if($item->description)
                                     <div class="text-xs text-gray-500 line-clamp-1 max-w-xs mt-0.5">{{ $item->description }}</div>
                                 @endif
-                            </td>
-                            <td class="py-4 px-5 whitespace-nowrap text-gray-300">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-flask text-brand-orange text-xs"></i>
-                                    <span>{{ $item->laboratory->name }}</span>
-                                </div>
                             </td>
                             <td class="py-4 px-5 text-center whitespace-nowrap">
                                 <span class="font-bold {{ $item->available_quantity > 0 ? 'text-green-400' : 'text-red-400' }}">
@@ -194,7 +178,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="py-16 text-center">
+                            <td colspan="6" class="py-16 text-center">
                                 <div class="w-14 h-14 bg-premium-gray rounded-2xl flex items-center justify-center mx-auto mb-3">
                                     <i class="fa-solid fa-box-open text-gray-600 text-2xl"></i>
                                 </div>
@@ -217,4 +201,3 @@
         </div>
     </div>
 </x-app-layout>
-

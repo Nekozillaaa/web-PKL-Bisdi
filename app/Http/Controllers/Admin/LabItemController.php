@@ -23,16 +23,12 @@ class LabItemController extends Controller
             });
         }
 
-        if ($request->filled('laboratory_id')) {
-            $query->where('laboratory_id', $request->laboratory_id);
-        }
-
         if ($request->filled('condition')) {
             $query->where('condition', $request->condition);
         }
 
         $items = $query->paginate(10)->withQueryString();
-        $laboratories = Laboratory::where('is_active', true)->get();
+        $lab = Laboratory::where('is_active', true)->first();
 
         $stats = [
             'total_items' => LabItem::count(),
@@ -41,20 +37,21 @@ class LabItemController extends Controller
             'damaged_units' => LabItem::whereIn('condition', ['slightly_damaged', 'damaged'])->count(),
         ];
 
-        return view('admin.items.index', compact('items', 'laboratories', 'stats'));
+        return view('admin.items.index', compact('items', 'lab', 'stats'));
     }
 
     public function create()
     {
-        $laboratories = Laboratory::where('is_active', true)->get();
+        $lab = Laboratory::where('is_active', true)->firstOrFail();
 
-        return view('admin.items.create', compact('laboratories'));
+        return view('admin.items.create', compact('lab'));
     }
 
     public function store(Request $request)
     {
+        $lab = Laboratory::where('is_active', true)->firstOrFail();
+
         $validated = $request->validate([
-            'laboratory_id' => ['required', 'exists:laboratories,id'],
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:50', 'unique:lab_items,code'],
             'description' => ['nullable', 'string'],
@@ -64,6 +61,7 @@ class LabItemController extends Controller
             'is_active' => ['boolean'],
         ]);
 
+        $validated['laboratory_id'] = $lab->id;
         $validated['is_active'] = $request->has('is_active');
 
         LabItem::create($validated);
@@ -73,15 +71,16 @@ class LabItemController extends Controller
 
     public function edit(LabItem $item)
     {
-        $laboratories = Laboratory::where('is_active', true)->get();
+        $lab = Laboratory::where('is_active', true)->firstOrFail();
 
-        return view('admin.items.edit', compact('item', 'laboratories'));
+        return view('admin.items.edit', compact('item', 'lab'));
     }
 
     public function update(Request $request, LabItem $item)
     {
+        $lab = Laboratory::where('is_active', true)->firstOrFail();
+
         $validated = $request->validate([
-            'laboratory_id' => ['required', 'exists:laboratories,id'],
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:50', Rule::unique('lab_items', 'code')->ignore($item->id)],
             'description' => ['nullable', 'string'],
@@ -91,6 +90,7 @@ class LabItemController extends Controller
             'is_active' => ['boolean'],
         ]);
 
+        $validated['laboratory_id'] = $lab->id;
         $validated['is_active'] = $request->has('is_active');
 
         $item->update($validated);

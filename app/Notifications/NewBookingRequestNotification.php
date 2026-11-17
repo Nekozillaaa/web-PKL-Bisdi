@@ -31,7 +31,7 @@ class NewBookingRequestNotification extends Notification
             'applicant' => $this->booking->user->name,
             'laboratory' => $this->booking->laboratory->name,
             'icon' => 'fa-bell text-brand-orange',
-            'url' => route('dashboard'),
+            'url' => route('bookings.show', $this->booking->id),
         ];
     }
 }

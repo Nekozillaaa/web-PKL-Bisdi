@@ -25,8 +25,7 @@ class BookingStatusUpdatedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $statusLabels = [
-            'approved_dosen' => 'Disetujui Dosen',
-            'approved_laboran' => 'Disetujui Laboran',
+            'approved' => 'Disetujui',
             'completed' => 'Selesai',
             'rejected' => 'Ditolak',
             'pending' => 'Menunggu',
@@ -43,11 +42,11 @@ class BookingStatusUpdatedNotification extends Notification
             'updated_by' => $this->updatedBy->name,
             'notes' => $this->notes,
             'icon' => match ($this->booking->status) {
-                'approved_dosen', 'approved_laboran', 'completed' => 'fa-circle-check text-green-400',
+                'approved', 'completed' => 'fa-circle-check text-green-400',
                 'rejected' => 'fa-circle-xmark text-red-400',
                 default => 'fa-clock text-yellow-400',
             },
-            'url' => route('dashboard'),
+            'url' => route('bookings.show', $this->booking->id),
         ];
     }
 }

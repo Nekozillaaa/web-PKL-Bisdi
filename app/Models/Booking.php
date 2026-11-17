@@ -17,6 +17,8 @@ class Booking extends Model
         'status',
         'purpose',
         'equipment_checklist',
+        'attachment_path',
+        'attachment_name',
     ];
 
     protected $casts = [
@@ -24,6 +26,11 @@ class Booking extends Model
         'end_time' => 'datetime',
         'equipment_checklist' => 'array',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(BookingItem::class);
+    }
 
     public function user()
     {

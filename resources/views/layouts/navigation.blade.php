@@ -42,6 +42,10 @@
                        class="text-sm font-medium transition-colors duration-200 {{ request()->routeIs('admin.items.*') ? 'text-brand-orange' : 'text-gray-400 hover:text-white' }}">
                         <i class="fa-solid fa-boxes-stacked mr-1.5 text-xs"></i>Kelola Barang
                     </a>
+                    <a href="{{ route('admin.documents.index') }}"
+                       class="text-sm font-medium transition-colors duration-200 {{ request()->routeIs('admin.documents.*') ? 'text-brand-orange' : 'text-gray-400 hover:text-white' }}">
+                        <i class="fa-solid fa-folder-open mr-1.5 text-xs"></i>Kelola Dokumen
+                    </a>
                 @endif
             </div>
 
@@ -187,6 +191,10 @@
                 <a href="{{ route('admin.items.index') }}"
                    class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('admin.items.*') ? 'bg-brand-orange/10 text-brand-orange' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
                     <i class="fa-solid fa-boxes-stacked mr-2 text-xs"></i>Kelola Barang
+                </a>
+                <a href="{{ route('admin.documents.index') }}"
+                   class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('admin.documents.*') ? 'bg-brand-orange/10 text-brand-orange' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                    <i class="fa-solid fa-folder-open mr-2 text-xs"></i>Kelola Dokumen
                 </a>
             @endif
 

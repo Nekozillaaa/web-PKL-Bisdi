@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('laboratory_id')->constrained()->cascadeOnDelete();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->enum('status', ['pending', 'approved_dosen', 'approved_laboran', 'rejected', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'approved_dosen', 'approved_laboran', 'rejected', 'completed', 'cancelled'])->default('pending');
             $table->text('purpose');
             $table->json('equipment_checklist')->nullable();
             $table->timestamps();

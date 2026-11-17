@@ -31,7 +31,7 @@
                     <i class="fa-solid fa-pen-to-square text-brand-orange"></i>
                     Perbarui Data Barang: {{ $item->name }}
                 </h3>
-                <p class="text-gray-500 text-xs mt-0.5">Perbarui informasi ketersediaan atau kondisi fisik barang</p>
+                <p class="text-gray-500 text-xs mt-0.5">Laboratorium: <strong class="text-gray-300">{{ $lab->name }}</strong></p>
             </div>
 
             <form action="{{ route('admin.items.update', $item->id) }}" method="POST" class="p-8 space-y-6">
@@ -52,18 +52,6 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="laboratory_id" class="label-dark">Laboratorium Penyimpan <span class="text-brand-orange">*</span></label>
-                        <select id="laboratory_id" name="laboratory_id" required class="input-dark">
-                            <option value="">-- Pilih Laboratorium --</option>
-                            @foreach($laboratories as $lab)
-                                <option value="{{ $lab->id }}" {{ old('laboratory_id', $item->laboratory_id) == $lab->id ? 'selected' : '' }}>
-                                    {{ $lab->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
                         <label for="condition" class="label-dark">Kondisi Fisik <span class="text-brand-orange">*</span></label>
                         <select id="condition" name="condition" required class="input-dark">
                             <option value="good" {{ old('condition', $item->condition) == 'good' ? 'selected' : '' }}>Baik (Normal & Siap Pakai)</option>
@@ -71,14 +59,14 @@
                             <option value="damaged" {{ old('condition', $item->condition) == 'damaged' ? 'selected' : '' }}>Rusak Berat (Perlu Perbaikan)</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="total_quantity" class="label-dark">Total Unit Keseluruhan <span class="text-brand-orange">*</span></label>
                         <input type="number" id="total_quantity" name="total_quantity" value="{{ old('total_quantity', $item->total_quantity) }}" min="1" required class="input-dark">
                     </div>
+                </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="available_quantity" class="label-dark">Unit Siap Dipinjam <span class="text-brand-orange">*</span></label>
                         <input type="number" id="available_quantity" name="available_quantity" value="{{ old('available_quantity', $item->available_quantity) }}" min="0" required class="input-dark">
@@ -110,4 +98,3 @@
         </div>
     </div>
 </x-app-layout>
-

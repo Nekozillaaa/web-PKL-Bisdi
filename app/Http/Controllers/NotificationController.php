@@ -23,9 +23,14 @@ class NotificationController extends Controller
             return response()->json(['success' => true]);
         }
 
-        $url = $notification->data['url'] ?? route('dashboard');
+        $bookingId = $notification->data['booking_id'] ?? null;
+        $url = $notification->data['url'] ?? null;
 
-        return redirect($url);
+        if (! $url && $bookingId) {
+            $url = route('bookings.show', $bookingId);
+        }
+
+        return redirect($url ?: route('dashboard'));
     }
 
     public function markAllAsRead()
